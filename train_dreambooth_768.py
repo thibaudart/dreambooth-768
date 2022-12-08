@@ -173,6 +173,9 @@ def parse_args(input_args=None):
         "--center_crop", action="store_true", help="Whether to center crop images before resizing to resolution"
     )
     parser.add_argument("--train_text_encoder", action="store_true", help="Whether to train the text encoder")
+
+    parser.add_argument("--max_train_text_encoder", type=float, default=1.0, help="stop text encoder after")
+
     parser.add_argument(
         "--train_batch_size", type=int, default=4, help="Batch size (per device) for the training dataloader."
     )
@@ -753,9 +756,16 @@ def main(args):
     text_enc_context = nullcontext() if args.train_text_encoder else torch.no_grad()
     for epoch in range(args.num_train_epochs):
         unet.train()
-        if args.train_text_encoder:
-            text_encoder.train()
         for step, batch in enumerate(train_dataloader):
+            
+            #change thib
+            if args.train_text_encoder and global_step/args.max_train_steps <= args.max_train_text_encoder :
+                text_encoder.train()
+                #print(f"steps ON: {global_step} {args.max_train_steps} {args.max_train_text_encoder}")
+            else:
+                text_encoder.train(False)
+                #print(f"steps OFF: {global_step} {args.max_train_steps} {args.max_train_text_encoder}")
+
             with accelerator.accumulate(unet):
                 # Convert images to latent space
                 with torch.no_grad():
