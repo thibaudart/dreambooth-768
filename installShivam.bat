@@ -125,7 +125,10 @@ pause
 call pip uninstall torch
 call pip uninstall torchvision
 call pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116 
-
+call pip uninstall diffusers
+call pip install --upgrade diffusers==0.10.0
 
 mkdir outputs
 mkdir outputs\txt2img-images
+
+wget https://raw.githubusercontent.com/thibaudart/dreambooth-768/main/train_dreambooth_768.py -O code/resources/shivam/examples/dreambooth/train_dreambooth_768.py
