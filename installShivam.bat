@@ -132,3 +132,11 @@ mkdir outputs
 mkdir outputs\txt2img-images
 
 wget https://raw.githubusercontent.com/thibaudart/dreambooth-768/main/train_dreambooth_768.py -O code/resources/shivam/examples/dreambooth/train_dreambooth_768.py
+
+echo to have intermediate checkpoint (we must fix it with: https://github.com/tcapelle/diffusers/commit/d3885e21d0aa237d4c5f6882a4a5da3015c278e3 it ll be better)
+call pip uninstall accelerate
+call pip install accelerate==0.14.0
+call accelerate config
+
+echo new install of lora for inference
+call pip install git+https://github.com/cloneofsimo/lora.git
